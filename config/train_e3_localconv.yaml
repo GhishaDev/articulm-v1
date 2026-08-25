@@ -1,0 +1,72 @@
+# E3 — Local Conv ON arm (docs/08_experiment_plan.md).
+#
+# Purpose: prove the Local Conv ON code path trains, validates and checkpoints
+# identically to the OFF arm. Everything except model_config matches
+# config/train_e0_sanity.yaml so the two are comparable.
+#
+# This is NOT the real E3 ablation. On the illustrative synthetic corpus the
+# viseme label is a deterministic function of the phoneme, so both arms
+# saturate and the comparison carries no quality signal. Run the real ablation
+# on articulm_data_pipeline output.
+experiment:
+  name: articulm_v1_50m_e3_localconv_on
+  seed: 42
+  output_dir: runs/articulm_v1_50m_e3_localconv_on
+
+model_config: config/model_v1_50m_localconv.yaml
+data_config: config/data_dev.yaml
+
+training:
+  stage: ablation_local_conv_on
+  precision: auto
+
+  max_steps: 120
+
+  optimizer:
+    type: adamw
+    learning_rate: 3.0e-4
+    weight_decay: 0.01
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+
+  scheduler:
+    type: cosine
+    warmup_ratio: 0.05
+
+  # Same strategy and budget shape as the real baseline config.
+  batching:
+    strategy: dynamic_phoneme_tokens
+    max_phoneme_tokens_per_batch: 4000
+    gradient_accumulation_steps: 2
+
+  gradient_clip_norm: 1.0
+
+  loss:
+    viseme:
+      type: cross_entropy
+      weight: 1.0
+      label_smoothing: 0.05
+    strength:
+      type: smooth_l1
+      weight: 0.3
+      normalize_target_to_0_1: true
+      beta: 0.1
+      source_weights:
+        pseudo_strength_v1: 1.0
+        human: 1.0
+
+  evaluation:
+    every_steps: 30
+
+  checkpoint:
+    every_steps: 40
+    save_last: true
+    save_best_by: val_viseme_macro_f1
+    keep_last_n: 2
+
+  early_stopping:
+    enabled: true
+    patience_evaluations: 5
+
+  logging:
+    every_steps: 10

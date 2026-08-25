@@ -1,0 +1,73 @@
+# ArticuLM-V1-50M with the optional Local Coarticulation Conv ENABLED.
+#
+# This is the E3 ablation arm from docs/08_experiment_plan.md. It differs from
+# config/model_v1_50m.yaml in exactly one field: model.local_conv.enabled.
+# The 10 x 640 baseline is otherwise untouched.
+#
+# Adds 5 x (LayerNorm 1280 + depthwise conv 3200 + bias 640) = 25,600 params,
+# inserted after transformer blocks 2, 4, 6, 8 and 10.
+model:
+  name: ArticuLM-V1-50M
+  input:
+    max_seq_len: 256
+    embedding_dims:
+      phoneme: 256
+      language: 8
+      surface_tone: 16
+      stress: 8
+      syllable_role: 16
+      articulatory:
+        type: 8
+        height: 8
+        backness: 8
+        rounded: 4
+        place: 12
+        manner: 12
+        voiced: 4
+        aspirated: 4
+      boundary: 20
+    fused_input_dim: 384
+
+  fusion:
+    output_dim: 640
+    layer_norm: true
+    activation: gelu
+    dropout: 0.1
+
+  position:
+    type: rope
+
+  transformer:
+    hidden_size: 640
+    num_layers: 10
+    num_heads: 10
+    head_dim: 64
+    ffn_size: 2560
+    activation: gelu
+    norm: pre_layer_norm
+    dropout: 0.1
+    attention_dropout: 0.1
+
+  local_conv:
+    enabled: true
+    every_n_layers: 2
+    kernel_size: 5
+    depthwise: true
+
+  viseme_head:
+    hidden_size: 256
+    num_classes: 18
+    dropout: 0.1
+
+  viseme_embedding:
+    num_embeddings: 18
+    dim: 32
+    mode: soft_probability_weighted
+
+  strength_head:
+    input_dim: 672
+    hidden_dims: [256, 64]
+    dropout: 0.1
+    activation: gelu
+    output_activation: sigmoid
+    output_scale: 100.0

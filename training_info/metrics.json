@@ -1,0 +1,734 @@
+{
+  "label_set": "synthetic",
+  "dataset": "data/v2/test.jsonl",
+  "checkpoint": "runs/baseline_v2_strength_fast/checkpoints/best.pt",
+  "note": "Synthetic and Human Gold results must be reported separately; this file covers exactly one label_set.",
+  "num_tokens": 333295,
+  "num_sequences": 7000,
+  "viseme": {
+    "accuracy": 0.9999189906839286,
+    "macro_f1": 0.9998954535759498,
+    "weighted_f1": 0.9999189920960098,
+    "macro_precision": 0.9998935912654194,
+    "macro_recall": 0.9998973162058115,
+    "confusion_matrix": [
+      [
+        22731,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30189,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        42293,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        32857,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2970,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        5465,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        22915,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6262,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1574,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5123,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        12557,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        18009,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        17281,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        57113,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        29026,
+        0,
+        0,
+        13
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10614,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6461,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        12,
+        0,
+        0,
+        9828
+      ]
+    ],
+    "per_class": [
+      {
+        "viseme_id": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 22731
+      },
+      {
+        "viseme_id": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 30189
+      },
+      {
+        "viseme_id": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 42293
+      },
+      {
+        "viseme_id": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 32857
+      },
+      {
+        "viseme_id": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2970
+      },
+      {
+        "viseme_id": 5,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 5465
+      },
+      {
+        "viseme_id": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 22915
+      },
+      {
+        "viseme_id": 7,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 6262
+      },
+      {
+        "viseme_id": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 1574
+      },
+      {
+        "viseme_id": 9,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 5123
+      },
+      {
+        "viseme_id": 10,
+        "precision": 0.9999203694855868,
+        "recall": 0.9999203694855868,
+        "f1": 0.9999203694855868,
+        "support": 12558
+      },
+      {
+        "viseme_id": 11,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 18009
+      },
+      {
+        "viseme_id": 12,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 17281
+      },
+      {
+        "viseme_id": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 57113
+      },
+      {
+        "viseme_id": 14,
+        "precision": 0.99958674839865,
+        "recall": 0.999552326182031,
+        "f1": 0.9995695369939906,
+        "support": 29039
+      },
+      {
+        "viseme_id": 15,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 10614
+      },
+      {
+        "viseme_id": 16,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 6461
+      },
+      {
+        "viseme_id": 17,
+        "precision": 0.9985775248933144,
+        "recall": 0.9986789960369881,
+        "f1": 0.9986282578875171,
+        "support": 9841
+      }
+    ]
+  },
+  "strength": {
+    "mae": 0.18023919909984595,
+    "rmse": 0.26398270867119134,
+    "median_absolute_error": 0.1314239501953125,
+    "count": 333295,
+    "per_viseme_mae": {
+      "0": 0.29244320853377115,
+      "1": 0.15672677094529885,
+      "2": 0.14924762081734053,
+      "3": 0.20706496845476052,
+      "4": 0.20052543665824915,
+      "5": 0.4162379719419209,
+      "6": 0.16956682581842245,
+      "7": 0.21608973295686346,
+      "8": 0.20631976291215404,
+      "9": 0.250363470729431,
+      "10": 0.24668213227198066,
+      "11": 0.21785551078898485,
+      "12": 0.09902638082778549,
+      "13": 0.15337705833431453,
+      "14": 0.2139628812413623,
+      "15": 0.14494709872426748,
+      "16": 3.092908424398427e-08,
+      "17": 0.0627722621270958
+    }
+  },
+  "slices": {
+    "language": {
+      "en": {
+        "num_tokens": 79950,
+        "viseme_accuracy": 0.9996622889305816,
+        "viseme_macro_f1": 0.9990149487341575,
+        "strength_mae": 0.3025591865191242,
+        "strength_rmse": 0.411736568618666
+      },
+      "zh": {
+        "num_tokens": 253345,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.14163775462570088,
+        "strength_rmse": 0.1953959166248988
+      }
+    },
+    "surface_tone": {
+      "tone_0": {
+        "num_tokens": 79950,
+        "viseme_accuracy": 0.9996622889305816,
+        "viseme_macro_f1": 0.9990149487341575,
+        "strength_mae": 0.3025591865191242,
+        "strength_rmse": 0.411736568618666
+      },
+      "tone_1": {
+        "num_tokens": 49637,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.12647231890278796,
+        "strength_rmse": 0.17471645418777715
+      },
+      "tone_2": {
+        "num_tokens": 54722,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.14343193033007232,
+        "strength_rmse": 0.1904053670224837
+      },
+      "tone_3": {
+        "num_tokens": 38252,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.139161395837133,
+        "strength_rmse": 0.1941495026236308
+      },
+      "tone_4": {
+        "num_tokens": 83766,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.15538486303744747,
+        "strength_rmse": 0.2028165537293298
+      },
+      "tone_5": {
+        "num_tokens": 26968,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.12672271938219298,
+        "strength_rmse": 0.21836639990547854
+      }
+    },
+    "stress": {
+      "stress_0": {
+        "num_tokens": 265676,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.14737203041172806,
+        "strength_rmse": 0.20919538809696747
+      },
+      "stress_1": {
+        "num_tokens": 58238,
+        "viseme_accuracy": 0.9995707270167244,
+        "viseme_macro_f1": 0.9985579457751418,
+        "strength_mae": 0.3052810866236912,
+        "strength_rmse": 0.40865290210727184
+      },
+      "stress_2": {
+        "num_tokens": 9381,
+        "viseme_accuracy": 0.9997868031126745,
+        "viseme_macro_f1": 0.9994485321441843,
+        "strength_mae": 0.33478865802904373,
+        "strength_rmse": 0.4469514587554353
+      }
+    },
+    "syllable_role": {
+      "coda": {
+        "num_tokens": 48383,
+        "viseme_accuracy": 0.9999379947502222,
+        "viseme_macro_f1": 0.9984674364996277,
+        "strength_mae": 0.23914646509549495,
+        "strength_rmse": 0.3616578207531623
+      },
+      "nucleus": {
+        "num_tokens": 163154,
+        "viseme_accuracy": 0.999963224928595,
+        "viseme_macro_f1": 0.9994398361080035,
+        "strength_mae": 0.19531952330157692,
+        "strength_rmse": 0.25058479041844633
+      },
+      "onset": {
+        "num_tokens": 106009,
+        "viseme_accuracy": 0.9998302030959636,
+        "viseme_macro_f1": 0.99759489274236,
+        "strength_mae": 0.15411899504288984,
+        "strength_rmse": 0.24866333167580515
+      },
+      "other": {
+        "num_tokens": 1740,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.08426340170970839,
+        "strength_rmse": 0.23425876749358876
+      },
+      "silence": {
+        "num_tokens": 14009,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.01073739616824844,
+        "strength_rmse": 0.01385546167674685
+      }
+    },
+    "phrase_position": {
+      "phrase_end": {
+        "num_tokens": 32692,
+        "viseme_accuracy": 0.999694114768139,
+        "viseme_macro_f1": 0.9974693183722866,
+        "strength_mae": 0.2007213985119195,
+        "strength_rmse": 0.2961006389900921
+      },
+      "phrase_start": {
+        "num_tokens": 29215,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.19707262219375643,
+        "strength_rmse": 0.28514970066431183
+      },
+      "word_end": {
+        "num_tokens": 71010,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.1314071908297295,
+        "strength_rmse": 0.18115384516259647
+      },
+      "word_internal": {
+        "num_tokens": 29950,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.08379478902520242,
+        "strength_rmse": 0.1613209006840307
+      },
+      "word_start": {
+        "num_tokens": 170428,
+        "viseme_accuracy": 0.9999002511324431,
+        "viseme_macro_f1": 0.9993925282002295,
+        "strength_mae": 0.21071939381985244,
+        "strength_rmse": 0.2954300081988233
+      }
+    },
+    "length_bucket": {
+      "len_129_plus": {
+        "num_tokens": 14279,
+        "viseme_accuracy": 0.9997899012535892,
+        "viseme_macro_f1": 0.9996662818176403,
+        "strength_mae": 0.18437160762036428,
+        "strength_rmse": 0.27491271030576264
+      },
+      "len_17_32": {
+        "num_tokens": 44784,
+        "viseme_accuracy": 0.9999776705966417,
+        "viseme_macro_f1": 0.9999772463807592,
+        "strength_mae": 0.1665991713326503,
+        "strength_rmse": 0.23727018120345633
+      },
+      "len_1_8": {
+        "num_tokens": 107,
+        "viseme_accuracy": 1.0,
+        "viseme_macro_f1": 1.0,
+        "strength_mae": 0.3028575984117027,
+        "strength_rmse": 0.4479910645131078
+      },
+      "len_33_64": {
+        "num_tokens": 153499,
+        "viseme_accuracy": 0.9999804558987355,
+        "viseme_macro_f1": 0.9999731795079744,
+        "strength_mae": 0.17471298051168244,
+        "strength_rmse": 0.25502690239780307
+      },
+      "len_65_128": {
+        "num_tokens": 113610,
+        "viseme_accuracy": 0.9998415632426723,
+        "viseme_macro_f1": 0.9997593583358059,
+        "strength_mae": 0.19136019665929865,
+        "strength_rmse": 0.28230065590231185
+      },
+      "len_9_16": {
+        "num_tokens": 7016,
+        "viseme_accuracy": 0.999714937286203,
+        "viseme_macro_f1": 0.9997460427996641,
+        "strength_mae": 0.1978476313595897,
+        "strength_rmse": 0.28429551353744265
+      }
+    }
+  }
+}

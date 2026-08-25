@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.enc-cache.pt
+runs/
+
+# Editor / OS junk
+*.swp
+.DS_Store
+._*
+
+# Local machine-specific Claude Code permissions
+.claude/settings.local.json

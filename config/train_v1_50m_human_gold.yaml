@@ -1,0 +1,101 @@
+# ArticuLM-V1-50M - Human Gold fine-tuning on top of the synthetic baseline.
+#
+# Stage 4 of docs/04_training_plan.md; full recipe in
+# docs/16_next_phase_human_gold_and_real_eval.md (Phase C).
+#
+# Differences from config/train_v1_50m_gpu.yaml:
+#   stage                        synthetic_pretraining -> human_gold_finetuning
+#   learning_rate                3.0e-4                -> 2.0e-5   (backbone)
+#   head_learning_rate           (none)                -> 2.0e-4   (differential)
+#   strength loss weight         0.3                   -> 1.0      (CLAUDE.md HG recipe)
+#   pseudo_strength_v1 weight    1.0                   -> 0.0      (programmatic labels off)
+#   max_steps                    200000                -> 20000    (small HG corpus)
+#   tokens/batch                 32000                 -> 16000
+#   eval/checkpoint cadence      2000                  -> 500
+#   early stopping patience      5                     -> 8        (noisier curves)
+#
+# Launch (weights only, frozen vocab - see docs/16 C2):
+#   CUDA_VISIBLE_DEVICES=2 python -m articulm.train \
+#       --config config/train_v1_50m_human_gold.yaml \
+#       --init-from archive/baseline_v1_20260821_synthetic/model/best.pt \
+#       --vocab archive/baseline_v1_20260821_synthetic/features/feature_vocab.json \
+#       --run-dir runs/human_gold_ft_v1 --device cuda
+#
+# The data files below are Phase A deliverables and do not exist yet; the run
+# will fail fast until config/data_human_gold.yaml points at real files.
+
+experiment:
+  name: articulm_v1_50m_human_gold_ft
+  seed: 42
+  output_dir: runs/articulm_v1_50m_human_gold_ft
+
+model_config: config/model_v1_50m.yaml
+data_config: config/data_human_gold.yaml
+
+training:
+  stage: human_gold_finetuning
+
+  precision: auto
+
+  max_steps: 20000
+
+  optimizer:
+    type: adamw
+    # docs/04 Stage 4: backbone 1e-5 ~ 5e-5, heads 1e-4 ~ 3e-4.
+    learning_rate: 2.0e-5
+    head_learning_rate: 2.0e-4
+    weight_decay: 0.01
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+
+  scheduler:
+    type: cosine
+    # Small corpus: a slightly higher warmup share than pretraining (0.05).
+    warmup_ratio: 0.10
+
+  batching:
+    strategy: dynamic_phoneme_tokens
+    max_phoneme_tokens_per_batch: 16000
+    gradient_accumulation_steps: 1
+    num_workers: 8
+    shuffle: true
+
+  gradient_clip_norm: 1.0
+
+  loss:
+    viseme:
+      type: cross_entropy
+      weight: 1.0
+      label_smoothing: 0.05
+    strength:
+      type: smooth_l1
+      # CLAUDE.md Human Gold recipe: full-weight Huber on real GT strength.
+      weight: 1.0
+      normalize_target_to_0_1: true
+      beta: 0.1
+      # Programmatic strength is a prior, never Human Gold; during
+      # fine-tuning it gets zero weight so only annotated sentences
+      # teach strength. Raise to 0.1-0.3 (and record it) only if the
+      # HG corpus turns out too small to fit strength alone.
+      source_weights:
+        human: 1.0
+        human_gold: 1.0
+        pseudo_strength_v1: 0.0
+
+  evaluation:
+    every_steps: 500
+
+  checkpoint:
+    every_steps: 500
+    save_last: true
+    save_best_by: val_viseme_macro_f1
+    keep_last_n: 3
+
+  early_stopping:
+    enabled: true
+    # Fine-tuning curves are noisier on a small corpus; tolerate more
+    # evaluations without improvement than the pretraining default of 5.
+    patience_evaluations: 8
+
+  logging:
+    every_steps: 50

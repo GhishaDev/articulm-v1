@@ -1,0 +1,47 @@
+# Human Gold data config - mirrors config/data_v1.yaml except paths.
+# Contract is identical (articulm_v1_sample_v1, 18 viseme classes); only
+# the label sources differ (strength_source: human/human_gold).
+data:
+  schema_version: articulm_v1_sample_v1
+
+  # Phase A deliverables (docs/16): annotated Human Gold files. These do not
+  # exist yet - the fine-tuning run fails fast until they are produced by the
+  # dataset factory and pass articulm.data.validate.
+  train_path: data/hg_train.jsonl
+  validation_path: data/hg_validation.jsonl
+  test_path: data/hg_test.jsonl
+
+  max_seq_len: 256
+
+  padding:
+    phoneme_pad_token: "[PAD]"
+    phoneme_unk_token: "[UNK]"
+
+  language:
+    supported: ["zh", "en"]
+
+  chinese:
+    surface_tone_values: [1, 2, 3, 4, 5]
+    stress_default: 0
+
+  english:
+    surface_tone_default: 0
+    stress_values: [0, 1, 2]
+
+  labels:
+    viseme_classes: 18
+    strength_min: 0.0
+    strength_max: 100.0
+
+  validation:
+    reject_nan_inf: true
+    reject_invalid_viseme: true
+    reject_invalid_strength: true
+    fail_on_schema_mismatch: true
+
+  split:
+    train_ratio: 0.90
+    validation_ratio: 0.05
+    test_ratio: 0.05
+    seed: 42
+    prevent_near_duplicate_leakage: true

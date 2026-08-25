@@ -1,0 +1,6 @@
+# 运行时依赖（本机为 torch 2.9.1+cu128）
+torch>=2.0
+pyyaml>=6.0
+pypinyin>=0.50
+# parquet 数据读取走 clickhouse-local（系统二进制，非 pip 包）：
+#   sudo apt install clickhouse-local  或  https://clickhouse.com/docs/install

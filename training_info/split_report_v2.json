@@ -1,0 +1,35 @@
+{
+  "counts": {
+    "train": 126000,
+    "validation": 7000,
+    "test": 7000
+  },
+  "target_ratios": {
+    "train": 0.9,
+    "validation": 0.05,
+    "test": 0.05
+  },
+  "actual_ratios": {
+    "train": 0.9,
+    "validation": 0.05,
+    "test": 0.05
+  },
+  "num_duplicate_groups": 139774,
+  "num_redundant_sentences": 226,
+  "num_exact_duplicate_pairs": 121,
+  "num_near_duplicate_pairs": 238,
+  "num_candidate_pairs_compared": 44530800,
+  "num_skipped_buckets": 315,
+  "num_sentences_in_skipped_buckets": 361717,
+  "largest_skipped_bucket": 8206,
+  "num_dropped_duplicates": 0,
+  "warnings": [],
+  "empty_targeted_splits": [],
+  "input": "data/corpus_strength_v2.jsonl",
+  "destinations": {
+    "train": "data/v2/train.jsonl",
+    "validation": "data/v2/validation.jsonl",
+    "test": "data/v2/test.jsonl"
+  },
+  "leakage_check": "passed"
+}

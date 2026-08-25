@@ -1,0 +1,21 @@
+{
+  "run_id": "articulm_v1_50m_strength_v2_fast_20260824_143800_460",
+  "global_step": 15000,
+  "epochs_completed": 79,
+  "final_train_loss": 0.32486383497715,
+  "final_train_viseme_accuracy": 0.9999999862909317,
+  "final_train_strength_mae": 0.3295067916624248,
+  "best_metric": 0.9980404241813827,
+  "best_step": 15000,
+  "validation": {
+    "val_viseme_accuracy": 0.9998838898680512,
+    "val_viseme_macro_f1": 0.9998529130445674,
+    "val_viseme_weighted_f1": 0.9998838593858819,
+    "val_strength_mae": 0.18124888631845845,
+    "val_strength_rmse": 0.2653522424979903,
+    "val_composite": 0.9980404241813827
+  },
+  "checkpoint_dir": "runs/baseline_v2_strength_fast/checkpoints",
+  "stopped_because": "max_steps_reached",
+  "saw_non_finite_loss": false
+}

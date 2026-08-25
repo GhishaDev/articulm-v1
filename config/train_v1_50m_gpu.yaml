@@ -1,0 +1,111 @@
+# ArticuLM-V1-50M — synthetic pretraining on a single GPU.
+#
+# Differs from config/train_v1_50m.yaml only in the performance knobs that are
+# tuned for GPU rather than local CPU smoke testing:
+#
+#   max_phoneme_tokens_per_batch   6000 -> 32000    (see the sizing table below)
+#   gradient_accumulation_steps    2    -> 1
+#   num_workers                    0    -> 8        (0 starves the GPU)
+#   evaluation/checkpoint cadence  1000 -> 2000
+#
+# The 10 x 640 baseline, the loss definition and the label-source weights are
+# unchanged. See docs/15_gpu_training_setup.md for the reasoning and for the
+# migration checklist.
+#
+# Before the first real run:
+#   scripts/run_training.sh --config config/train_v1_50m_gpu.yaml --dry-run
+
+experiment:
+  name: articulm_v1_50m_baseline_gpu
+  seed: 42
+  output_dir: runs/articulm_v1_50m_baseline_gpu
+
+model_config: config/model_v1_50m.yaml
+data_config: config/data_v1.yaml
+
+training:
+  stage: synthetic_pretraining
+
+  # auto resolves per card and prints its reason:
+  #   V100 / T4 (sm_70..75) -> fp16 + GradScaler
+  #   A100 / L40S / H100    -> bf16, no loss scaling
+  # An explicit bf16 request on a V100-class card is rejected, not downgraded.
+  precision: auto
+
+  # Upper bound only. Real stopping is driven by the validation plateau
+  # (early_stopping below), per docs/04_training_plan.md.
+  max_steps: 200000
+
+  optimizer:
+    type: adamw
+    # Tuned for ~6000 padded tokens x accum 2. If the effective batch changes
+    # by more than ~4x, revisit this together with scheduler.warmup_ratio.
+    learning_rate: 3.0e-4
+    weight_decay: 0.01
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+
+  scheduler:
+    type: cosine
+    warmup_ratio: 0.05
+
+  batching:
+    strategy: dynamic_phoneme_tokens
+
+    # Budget is PADDED tokens (batch_size x max_len_in_batch), because that is
+    # what determines activation memory. Estimated totals including the 0.74 GB
+    # of fp32 weights/grads/AdamW moments, and a ~3x allowance for cuDNN
+    # workspace and fragmentation:
+    #
+    #   tokens   bf16 est.   ~3x actual   fits
+    #   16,000     3.41 GB     ~10.2 GB   V100 16G / T4 16G
+    #   32,000     6.08 GB     ~18.3 GB   V100 32G / A100 40G     <- shipped
+    #   65,536    11.68 GB     ~35.0 GB   A100 80G / H100 80G
+    #
+    # Starting points, not ceilings. Check nvidia-smi and the tokens_per_s field
+    # in logs/events.jsonl, then push higher. On OOM, halve this and raise
+    # gradient_accumulation_steps to keep the effective batch constant.
+    max_phoneme_tokens_per_batch: 32000
+    gradient_accumulation_steps: 1
+
+    # 0 makes the main process do all collation and starves the GPU. Use half
+    # to all of the physical cores. persistent_workers switches on automatically
+    # when this is > 0; pin_memory switches on automatically on CUDA.
+    num_workers: 8
+    shuffle: true
+
+  gradient_clip_norm: 1.0
+
+  loss:
+    viseme:
+      type: cross_entropy
+      weight: 1.0
+      label_smoothing: 0.05
+    strength:
+      type: smooth_l1
+      weight: 0.3
+      normalize_target_to_0_1: true
+      beta: 0.1
+      # Per-label-source multipliers applied on top of `weight`.
+      # pseudo_strength_v1 is a programmatic prior, NOT Human Gold.
+      source_weights:
+        pseudo_strength_v1: 1.0
+        human: 1.0
+
+  evaluation:
+    every_steps: 2000
+
+  checkpoint:
+    every_steps: 2000
+    save_last: true
+    save_best_by: val_viseme_macro_f1
+    # Each checkpoint is ~571 MB. keep_last_n=3 plus best.pt and last.pt is
+    # ~2.8 GB; the gate stage writes its own set on top of that.
+    keep_last_n: 3
+
+  early_stopping:
+    enabled: true
+    patience_evaluations: 5
+
+  logging:
+    every_steps: 50

@@ -1,0 +1,95 @@
+# v2 strength corpus + fast schedule, max_steps raised to 30000 (the 15k run
+# hit max_steps with strength MAE still descending; see
+# train_v1_50m_gpu_fast.yaml header
+# for the schedule rationale). Differs from train_v1_50m_gpu_fast.yaml only in
+# data_config / experiment name / strength source label.
+
+# ArticuLM-V1-50M - fast-schedule synthetic pretraining.
+#
+# Derived from the v2 strength experiment evidence
+# (reports/training_report_v2_strength.md §5 / archive/strength_v2_20260822):
+# on the 126k-sentence corpus the model reaches its validation plateau by
+# step 2000-4000 and everything past ~8000 steps is noise; the 200k-step
+# cosine horizon kept lr near peak long after convergence, and best-checkpoint
+# selection on val_viseme_macro_f1 was a coin flip between noise-level values.
+#
+# Changes vs config/train_v1_50m_gpu.yaml:
+#   max_steps            200000 -> 15000   (matches the real convergence budget)
+#   warmup_ratio         0.05   -> 0.03    (300 -> 450 warmup steps on 15k)
+#   patience_evaluations 5      -> 3       (saves ~4k wasted steps)
+#   eval/checkpoint      2000   -> 1000    (crash-prone GPUs: cheaper restarts)
+#   save_best_by         val_viseme_macro_f1 -> val_composite
+#   logging              50     -> 100
+#   data encoded_cache   on by default (first run encodes ~26 min, restarts skip)
+#
+# Expected wall-clock: ~1h on a V100 (vs ~2.2h), including the one-off encode.
+
+experiment:
+  name: articulm_v1_50m_strength_v2_30k
+  seed: 42
+  output_dir: runs/articulm_v1_50m_strength_v2_30k
+
+model_config: config/model_v1_50m.yaml
+# Swap for config/data_v1_strength_v2.yaml to train on the v2 strength corpus.
+data_config: config/data_v1_strength_v2.yaml
+
+training:
+  stage: synthetic_pretraining
+
+  precision: auto
+
+  max_steps: 30000
+
+  optimizer:
+    type: adamw
+    learning_rate: 3.0e-4
+    weight_decay: 0.01
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+
+  scheduler:
+    type: cosine
+    warmup_ratio: 0.03
+
+  batching:
+    strategy: dynamic_phoneme_tokens
+    max_phoneme_tokens_per_batch: 32000
+    gradient_accumulation_steps: 1
+    num_workers: 8
+    shuffle: true
+
+  gradient_clip_norm: 1.0
+
+  loss:
+    viseme:
+      type: cross_entropy
+      weight: 1.0
+      label_smoothing: 0.05
+    strength:
+      type: smooth_l1
+      weight: 0.3
+      normalize_target_to_0_1: true
+      beta: 0.1
+      source_weights:
+        pseudo_strength_v2: 1.0
+        human: 1.0
+
+  evaluation:
+    every_steps: 1000
+
+  checkpoint:
+    every_steps: 1000
+    save_last: true
+    # macro F1 saturates at its noise ceiling; the composite keeps viseme
+    # primary while strength MAE breaks ties. alpha=1.0 -> a 0.30 MAE
+    # difference is worth 0.003 of macro F1.
+    save_best_by: val_composite
+    best_composite_alpha: 1.0
+    keep_last_n: 3
+
+  early_stopping:
+    enabled: true
+    patience_evaluations: 3
+
+  logging:
+    every_steps: 100

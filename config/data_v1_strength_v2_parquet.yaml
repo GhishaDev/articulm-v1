@@ -1,0 +1,47 @@
+# 同 data_v1_strength_v2.yaml，但三个切分指向无损 Parquet 表
+#（scripts/to_parquet_lossless.sh 产物：<split>.tokens.parquet + <split>.samples.parquet）。
+# train.py 按 .tokens.parquet 后缀自动走 parquet 加载器，语义与 JSONL 加载完全一致。
+# Same corpus as data_v1.yaml but labels built with pseudo_strength_v2
+# (zh tokens no longer take the implicit x0.92 unstressed factor).
+# Sentence-level splits are identical to the v1 set (same seed, same flags).
+data:
+  schema_version: articulm_v1_sample_v1
+
+  train_path: data/parquet_lossless/train.tokens.parquet
+  validation_path: data/parquet_lossless/validation.tokens.parquet
+  test_path: data/parquet_lossless/test.tokens.parquet
+
+  max_seq_len: 256
+
+  padding:
+    phoneme_pad_token: "[PAD]"
+    phoneme_unk_token: "[UNK]"
+
+  language:
+    supported: ["zh", "en"]
+
+  chinese:
+    surface_tone_values: [1, 2, 3, 4, 5]
+    stress_default: 0
+
+  english:
+    surface_tone_default: 0
+    stress_values: [0, 1, 2]
+
+  labels:
+    viseme_classes: 18
+    strength_min: 0.0
+    strength_max: 100.0
+
+  validation:
+    reject_nan_inf: true
+    reject_invalid_viseme: true
+    reject_invalid_strength: true
+    fail_on_schema_mismatch: true
+
+  split:
+    train_ratio: 0.90
+    validation_ratio: 0.05
+    test_ratio: 0.05
+    seed: 42
+    prevent_near_duplicate_leakage: true
